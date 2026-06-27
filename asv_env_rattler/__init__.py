@@ -37,7 +37,7 @@ class Rattler(environment.Environment):
     def __init__(self, conf, python, requirements, tagged_env_vars):
         if not _HAS_RATTLER:
             raise environment.EnvironmentUnavailable(
-                'asv_rattler requires the py-rattler package')
+                'asv_env_rattler requires the py-rattler package')
         """
         Parameters
         ----------
