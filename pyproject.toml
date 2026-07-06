@@ -4,13 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "asv_env_rattler"
-version = "0.1.0"
+version = "0.1.2"
 description = "ASV environment plugin (rattler) — install and list in asv.conf.json plugins"
-requires-python = ">=3.9"
-dependencies = ["asv>=0.6.5"]
-
-[project.optional-dependencies]
-api = ["py-rattler>=0.22", "PyYAML"]
+requires-python = ">=3.10"
+dependencies = [
+  "asv>=0.6.5",
+  "packaging",
+  "py-rattler>=0.22",
+  "PyYAML",
+]
 
 [project.entry-points."asv.plugins"]
 rattler = "asv_env_rattler"
