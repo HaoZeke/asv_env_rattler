@@ -1,9 +1,12 @@
 # asv_env_rattler
 
-ASV environment backend for `environment_type = "rattler"` using **py-rattler**
-(`solve` / `install` APIs), not the conda CLI.
+ASV environment backend for `environment_type = "rattler"` (py-rattler APIs).
 
-## Stage-1 discovery
+Core ASV (extract design) ships only **virtualenv** and **existing**.
+This package is the **provider** for `rattler` — there is no in-tree
+`asv.plugins.rattler`.
+
+## Discovery
 
 ```toml
 [project.entry-points."asv.environment_backends"]
@@ -18,17 +21,8 @@ pip install "git+https://github.com/HaoZeke/asv_env_rattler.git"
 { "environment_type": "rattler" }
 ```
 
-## Conflict with in-tree ASV
-
-Stage-1 ASV may also ship `asv.plugins.rattler` with `tool_name = "rattler"`.
-**In-tree registration wins** when both are present. This package is the
-extract / fallback implementation when optional in-tree backends are omitted.
-Do not register two different third-party providers for the same EP name.
-
-## Requirements
-
-- `py-rattler` and `PyYAML` (declared dependencies)
-- Host ASV with `asv.envmgmt.discover` (Stage-1) or conf `plugins`
+Install into the host environment that runs ASV. Conf `plugins` is optional
+when entry points are registered.
 
 ## Tests
 

@@ -5,8 +5,7 @@ Soft-imports ``py-rattler`` so importing this module does not hard-crash the
 host when the native stack is missing; constructing the backend or ``_setup``
 fail closed with ``EnvironmentUnavailable``.
 
-Stage-1 ASV may ship in-tree ``asv.plugins.rattler`` with the same
-``tool_name``; **in-tree registration wins** when both are present.
+Core ASV does not ship in-tree ``asv.plugins.rattler`` with the same
 """
 
 
