@@ -1,5 +1,14 @@
 # Licensed under a 3-clause BSD style license - see LICENSE.rst
-"""ASV rattler environment plugin (optional py-rattler dependency)."""
+"""ASV ``environment_type="rattler"`` backend via **py-rattler** APIs.
+
+Soft-imports ``py-rattler`` so importing this module does not hard-crash the
+host when the native stack is missing; constructing the backend or ``_setup``
+fail closed with ``EnvironmentUnavailable``.
+
+Stage-1 ASV may ship in-tree ``asv.plugins.rattler`` with the same
+``tool_name``; **in-tree registration wins** when both are present.
+"""
+
 
 import asyncio
 import inspect
@@ -96,6 +105,14 @@ class Rattler(environment.Environment):
                 else:
                     log.warning(f"Unknown channel_priority '{priority_str}' in .condarc")
 
+
+    @classmethod
+    def matches(cls, python):
+        import re
+        if not _HAS_RATTLER:
+            return False
+        return bool(re.match(r"^[0-9].*$", python) or re.match(r"^pypy[0-9.]*$", python))
+
     def _setup(self):
         asyncio.run(self._async_setup())
 
@@ -189,3 +206,5 @@ class Rattler(environment.Environment):
         # Run pip via python -m pip, so that it works on Windows when
         # upgrading pip itself, and avoids shebang length limit on Linux
         return self.run_executable("python", ["-m", "pip"] + list(args), **kwargs)
+
+__all__ = ["Rattler", "_HAS_RATTLER"]

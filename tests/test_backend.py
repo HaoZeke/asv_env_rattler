@@ -1,0 +1,28 @@
+# Licensed under a 3-clause BSD style license - see LICENSE.rst
+import asv_env_rattler
+from asv_env_rattler import Rattler, _HAS_RATTLER
+
+
+def test_tool_name():
+    assert Rattler.tool_name == "rattler"
+    assert asv_env_rattler.Rattler is Rattler
+
+
+def test_matches_respects_import():
+    # Does not crash; False if py-rattler missing, True/False for version string otherwise
+    result = Rattler.matches("3.12")
+    assert result is (_HAS_RATTLER and True) or (result is False)
+    assert Rattler.matches("not-a-version") is False
+
+
+def test_entry_point_metadata():
+    from importlib.metadata import entry_points
+
+    eps = entry_points()
+    try:
+        group = list(eps.select(group="asv.environment_backends"))
+    except AttributeError:
+        group = list(eps.get("asv.environment_backends", []))
+    names = {ep.name: ep.value for ep in group if ep.name == "rattler"}
+    assert "rattler" in names
+    assert "asv_env_rattler:Rattler" in names["rattler"] or "asv_env_rattler" in names["rattler"]
