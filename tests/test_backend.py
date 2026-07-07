@@ -9,10 +9,12 @@ def test_tool_name():
 
 
 def test_matches_respects_import():
-    # Does not crash; False if py-rattler missing, True/False for version string otherwise
-    result = Rattler.matches("3.12")
-    assert result is (_HAS_RATTLER and True) or (result is False)
     assert Rattler.matches("not-a-version") is False
+    result = Rattler.matches("3.12")
+    if _HAS_RATTLER:
+        assert result is True
+    else:
+        assert result is False
 
 
 def test_entry_point_metadata():
@@ -25,4 +27,4 @@ def test_entry_point_metadata():
         group = list(eps.get("asv.environment_backends", []))
     names = {ep.name: ep.value for ep in group if ep.name == "rattler"}
     assert "rattler" in names
-    assert "asv_env_rattler:Rattler" in names["rattler"] or "asv_env_rattler" in names["rattler"]
+    assert "asv_env_rattler" in names["rattler"]
