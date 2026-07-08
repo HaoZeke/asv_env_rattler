@@ -1,19 +1,16 @@
 [build-system]
-requires = ["setuptools>=61"]
-build-backend = "setuptools.build_meta"
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
 
 [project]
 name = "asv_env_rattler"
-version = "0.3.0"
-description = "ASV environment backend for rattler via py-rattler (Rust)"
+version = "0.4.0"
+description = "ASV environment_type=rattler via maturin wheel over rattler Rust crates"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "BSD-3-Clause" }
 dependencies = [
   "asv>=0.6.5",
-  "packaging",
-  "py-rattler>=0.22",
-  "PyYAML",
 ]
 
 [project.entry-points."asv.environment_backends"]
@@ -25,5 +22,7 @@ rattler = "asv_env_rattler:Rattler"
 [project.optional-dependencies]
 test = ["pytest"]
 
-[tool.setuptools.packages.find]
-include = ["asv_env_rattler*"]
+[tool.maturin]
+features = ["pyo3/extension-module"]
+python-source = "python"
+module-name = "asv_env_rattler._native"

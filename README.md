@@ -1,13 +1,12 @@
 # asv_env_rattler
 
-ASV `environment_type = "rattler"` backend using the **py-rattler** Rust
-library (`solve` / `install` in-process). Not the conda CLI.
-
-Core ASV (extract design) ships only virtualenv/existing; this package is
-the provider for `rattler`.
+ASV `environment_type = "rattler"` as a **maturin** wheel whose Rust core
+depends on the **rattler** crate stack (`rattler`, `rattler_solve`, …).
 
 ```bash
-pip install "git+https://github.com/HaoZeke/asv_env_rattler.git"
+# build (prefer remote builder with cargo+maturin)
+maturin build --release
+pip install target/wheels/asv_env_rattler-*.whl
 ```
 
 ```json

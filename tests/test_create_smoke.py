@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from asv.config import Config
-from asv_env_rattler import Rattler, _HAS_RATTLER
+from asv_env_rattler import Rattler, _HAS_NATIVE
 
 
 @pytest.fixture
@@ -24,9 +24,9 @@ def conf(tmp_path):
     return c
 
 
-def test_create_via_py_rattler(conf):
-    if not _HAS_RATTLER:
-        pytest.skip("py-rattler not installed")
+def test_create_via_native_extension(conf):
+    if not _HAS_NATIVE:
+        pytest.skip("maturin extension not built/installed")
     os.chdir(tempfile.mkdtemp())
     import sys
 
@@ -35,5 +35,5 @@ def test_create_via_py_rattler(conf):
     Path(env._path).mkdir(parents=True, exist_ok=True)
     env._setup()
     assert Path(env.find_executable("python")).exists()
-    out = env.run_executable("python", ["-c", "print(3*3)"])
-    assert "9" in out
+    out = env.run_executable("python", ["-c", "print(2*3)"])
+    assert "6" in out
