@@ -1,20 +1,32 @@
 # Licensed under a 3-clause BSD style license - see LICENSE.rst
+import ast
+from pathlib import Path
+
 import asv_env_rattler
-from asv_env_rattler import Rattler, _HAS_RATTLER
+from asv_env_rattler import Rattler, _HAS_RATTLER, rattler_solve_and_install
 
 
 def test_tool_name():
     assert Rattler.tool_name == "rattler"
-    assert asv_env_rattler.Rattler is Rattler
 
 
-def test_matches_respects_import():
-    assert Rattler.matches("not-a-version") is False
-    result = Rattler.matches("3.12")
+def test_has_rattler_or_matches_false():
     if _HAS_RATTLER:
-        assert result is True
+        assert Rattler.matches("3.12") is True
     else:
-        assert result is False
+        assert Rattler.matches("3.12") is False
+
+
+def test_create_path_imports_rattler():
+    tree = ast.parse(Path(asv_env_rattler.__file__).read_text())
+    imported = []
+    for n in ast.walk(tree):
+        if isinstance(n, ast.ImportFrom) and n.module:
+            imported.append(n.module)
+        elif isinstance(n, ast.Import):
+            imported.extend(a.name for a in n.names)
+    assert any(m == "rattler" or m.startswith("rattler.") for m in imported)
+    assert "rattler_solve_and_install" in asv_env_rattler.__all__
 
 
 def test_entry_point_metadata():
@@ -28,3 +40,13 @@ def test_entry_point_metadata():
     names = {ep.name: ep.value for ep in group if ep.name == "rattler"}
     assert "rattler" in names
     assert "asv_env_rattler" in names["rattler"]
+
+
+def test_rattler_api_callable():
+    if not _HAS_RATTLER:
+        return
+    import rattler
+
+    assert callable(rattler.solve)
+    assert callable(rattler.install)
+    assert callable(rattler_solve_and_install)

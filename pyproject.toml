@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "asv_env_rattler"
-version = "0.2.0"
-description = "ASV environment backend for environment_type=rattler (py-rattler APIs)"
+version = "0.3.0"
+description = "ASV environment backend for rattler via py-rattler (Rust)"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "BSD-3-Clause" }

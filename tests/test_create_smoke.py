@@ -24,7 +24,7 @@ def conf(tmp_path):
     return c
 
 
-def test_create_rattler_has_python(conf):
+def test_create_via_py_rattler(conf):
     if not _HAS_RATTLER:
         pytest.skip("py-rattler not installed")
     os.chdir(tempfile.mkdtemp())
@@ -34,7 +34,6 @@ def test_create_rattler_has_python(conf):
     env = Rattler(conf, py, {}, {})
     Path(env._path).mkdir(parents=True, exist_ok=True)
     env._setup()
-    py_path = Path(env.find_executable("python"))
-    assert py_path.exists()
-    out = env.run_executable("python", ["-c", "print(3+3)"])
-    assert "6" in out
+    assert Path(env.find_executable("python")).exists()
+    out = env.run_executable("python", ["-c", "print(3*3)"])
+    assert "9" in out
