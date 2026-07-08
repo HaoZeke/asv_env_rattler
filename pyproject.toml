@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "asv_env_rattler"
-version = "0.4.0"
+version = "0.4.1"
 description = "ASV environment_type=rattler via maturin wheel over rattler Rust crates"
 readme = "README.md"
 requires-python = ">=3.10"

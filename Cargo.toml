@@ -1,6 +1,6 @@
 [package]
 name = "asv_env_rattler"
-version = "0.4.0"
+version = "0.4.1"
 edition = "2021"
 description = "ASV rattler environment backend (Rust/maturin over rattler crates)"
 license = "BSD-3-Clause"

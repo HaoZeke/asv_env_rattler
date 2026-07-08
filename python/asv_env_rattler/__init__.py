@@ -26,6 +26,11 @@ class Rattler(environment.Environment):
     """Manage an environment via the maturin/Rust rattler extension."""
 
     tool_name = "rattler"
+    matrix_install_mode = "create"
+    supports_joint_pypi_conda_solve = False  # rattler#1044
+    supports_joint_pypi_solve = False
+    project_install_prefers_no_deps = True
+    requires_host_tool = None
 
     def __init__(self, conf, python, requirements, tagged_env_vars):
         if not _HAS_NATIVE:
